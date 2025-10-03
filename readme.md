@@ -56,3 +56,13 @@ Pipeline:
 git clone https://github.com/your-username/smart-voice-translator.git
 cd smart-voice-translator
 ```
+
+2. Install dependencies:
+```bash
+pip install -r requirements.txt
+```
+
+3. Run the app:
+```bash
+streamlit run translator.py
+```
