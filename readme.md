@@ -1,4 +1,4 @@
-# 🎙️ Smart Voice Translator 🌍
+## 🎙️ Smart Voice Translator 🌍
 A modern multilingual **AI-powered voice translator** built with **Streamlit**, **Hugging Face Transformers**, **Speech Recognition**, and **Google TTS**.  
 
 It allows you to:
@@ -64,5 +64,25 @@ pip install -r requirements.txt
 
 3. Run the app:
 ```bash
-streamlit run translator.py
+streamlit run streamlit_app.py
 ```
+
+---
+
+## 📝 Troubleshooting Files: requirements.txt & packages.txt
+requirements.txt
+Lists all Python packages required by the project (e.g., transformers, speechrecognition, gTTS, streamlit).
+Use it with pip install -r requirements.txt to quickly install Python dependencies.
+
+packages.txt
+Lists system-level dependencies needed for some Python packages to work (e.g., portaudio19-dev, python3-dev).
+Install these using your system’s package manager (like apt) before running Python scripts.
+
+---
+
+## Why Streamlit?
+Provides a fast and easy way to build interactive web apps in Python
+
+Allows real-time updates for voice input/output
+
+Minimal setup compared to full-stack frameworks, perfect for AI demos
