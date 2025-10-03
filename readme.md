@@ -4,8 +4,10 @@ A modern multilingual **AI-powered voice translator** built with **Streamlit**, 
 It allows you to:
 - 🎤 Speak in one language and hear the translation in another.  
 - ✍️ Type text and get instant translations.  
-- 🔊 Listen to the translated speech output.  
+- 🔊 Listen to the translated speech output.
 
+Live Demo: https://nlp-language-translater.streamlit.app/
+  
 ---
 
 ## 🚀 Why This Project?
@@ -67,6 +69,21 @@ pip install -r requirements.txt
 streamlit run streamlit_app.py
 ```
 
+4. Open your browser
+By default, Streamlit will open the app at:
+```bash
+http://localhost:8501
+```
+
+---
+
+## 💡 Voice Input: Local vs Cloud
+Local machine: 🎤 Voice input works! Click Speak & Translate to use your microphone.
+
+Streamlit Cloud: 🎤 Voice input is disabled, because remote servers cannot access your local microphone.
+
+You can always type text and get translations with TTS audio output.
+
 ---
 
 ## 📝 Troubleshooting Files: requirements.txt & packages.txt
@@ -86,3 +103,5 @@ Provides a fast and easy way to build interactive web apps in Python
 Allows real-time updates for voice input/output
 
 Minimal setup compared to full-stack frameworks, perfect for AI demos
+
+Works perfectly with cloud deployments for sharing, even if voice input is limited
