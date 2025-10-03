@@ -5,11 +5,6 @@ from gtts import gTTS
 import speech_recognition as sr
 import tempfile
 
-if "STREAMLIT_SERVER" in os.environ:
-    st.info(
-        "🎤 Voice input is disabled on cloud. Use the text box for translations. For full voice functionality, run this app locally."
-    )
-
 # Available models
 models = {
     "en-hi": "Helsinki-NLP/opus-mt-en-hi",
@@ -34,6 +29,12 @@ def translate(text, src, tgt):
     translated_tokens = model.generate(**inputs)
     return tokenizer.decode(translated_tokens[0], skip_special_tokens=True)
 
+
+if "STREAMLIT_SERVER" in os.environ:
+    st.info(
+        "🎤 Voice input is disabled on cloud. Use text input instead. "
+        "For full voice functionality, run this app locally."
+    )
 
 # ---------------- UI SETUP ----------------
 st.set_page_config(
