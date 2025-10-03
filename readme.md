@@ -5,7 +5,8 @@ It allows you to:
 - 🎤 Speak in one language and hear the translation in another.  
 - ✍️ Type text and get instant translations.  
 - 🔊 Listen to the translated speech output.
-Live Demo: 🌐 Click here to try
+
+Live Demo: https://nlp-language-translater.streamlit.app/
   
 ---
 
