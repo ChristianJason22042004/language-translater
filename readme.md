@@ -1,4 +1,4 @@
-# 🎙️ Smart Voice Translator 🌍
+## 🎙️ Smart Voice Translator 🌍
 A modern multilingual **AI-powered voice translator** built with **Streamlit**, **Hugging Face Transformers**, **Speech Recognition**, and **Google TTS**.  
 
 It allows you to:
