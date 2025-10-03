@@ -77,7 +77,9 @@ http://localhost:8501
 
 ## 💡 Voice Input: Local vs Cloud
 Local machine: 🎤 Voice input works! Click Speak & Translate to use your microphone.
+
 Streamlit Cloud: 🎤 Voice input is disabled, because remote servers cannot access your local microphone.
+
 You can always type text and get translations with TTS audio output.
 
 ---
@@ -95,6 +97,9 @@ Install these using your system’s package manager (like apt) before running Py
 
 ## Why Streamlit?
 Provides a fast and easy way to build interactive web apps in Python
+
 Allows real-time updates for voice input/output
+
 Minimal setup compared to full-stack frameworks, perfect for AI demos
+
 Works perfectly with cloud deployments for sharing, even if voice input is limited
