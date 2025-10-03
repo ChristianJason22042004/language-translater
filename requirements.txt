@@ -6,4 +6,3 @@ sentencepiece
 gTTS
 SpeechRecognition
 sacremoses
-pyaudio
