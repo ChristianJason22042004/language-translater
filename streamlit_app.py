@@ -14,6 +14,7 @@ models = {
     "fr-en": "Helsinki-NLP/opus-mt-fr-en",
 }
 
+
 def translate(text, src, tgt):
     key = f"{src}-{tgt}"
     if key not in models:
@@ -25,27 +26,81 @@ def translate(text, src, tgt):
     translated_tokens = model.generate(**inputs)
     return tokenizer.decode(translated_tokens[0], skip_special_tokens=True)
 
+
 # ---------------- UI Setup ----------------
-st.set_page_config(page_title="🌍 Smart Voice Translator", page_icon="🎙️", layout="centered")
+st.set_page_config(
+    page_title="🌍 Smart Voice Translator", page_icon="🎙️", layout="centered"
+)
 
 # Custom CSS
-st.markdown("""
+st.markdown(
+    """
 <style>
-body {background: linear-gradient(135deg,#0f2027,#203a43,#2c5364); color:white;}
-.stApp {background: linear-gradient(135deg,#0f2027,#203a43,#2c5364); font-family:'Segoe UI',sans-serif;}
-h1,h2,h3 {color:#f1f1f1; text-align:center;}
-.stTextArea textarea {background-color:#1e2a32; color:white; border-radius:12px;}
-.stSelectbox, .stButton>button {border-radius:12px;}
-.stButton>button {background:linear-gradient(90deg,#00c6ff,#0072ff); color:white; font-weight:bold; border:none; padding:10px 20px; border-radius:12px; transition:0.3s;}
-.stButton>button:hover {background:linear-gradient(90deg,#0072ff,#00c6ff); transform:scale(1.05);}
-.voice-badge {padding:5px 10px; border-radius:12px; font-weight:bold; display:inline-block;}
-.available {background-color:#28a745; color:white;}
-.disabled {background-color:#dc3545; color:white;}
+body {
+    background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+    color: white;
+}
+
+.stApp {
+    background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+    font-family: 'Segoe UI', sans-serif;
+}
+
+h1, h2, h3 {
+    color: #f1f1f1;
+    text-align: center;
+}
+
+.stTextArea textarea {
+    background-color: #1e2a32;
+    color: white;
+    border-radius: 12px;
+}
+
+.stSelectbox, .stButton > button {
+    border-radius: 12px;
+}
+
+.stButton > button {
+    background: linear-gradient(90deg, #00c6ff, #0072ff);
+    color: white;
+    font-weight: bold;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 12px;
+    transition: 0.3s;
+}
+
+.stButton > button:hover {
+    background: linear-gradient(90deg, #0072ff, #00c6ff);
+    transform: scale(1.05);
+}
+
+.voice-badge {
+    padding: 5px 10px;
+    border-radius: 12px;
+    font-weight: bold;
+    display: inline-block;
+}
+
+.available {
+    background-color: #28a745;
+    color: white;
+}
+
+.disabled {
+    background-color: #dc3545;
+    color: white;
+}
 </style>
-""", unsafe_allow_html=True)
+""",
+    unsafe_allow_html=True,
+)
 
 st.title("🎙️ Smart Voice Translator")
-st.markdown("#### Speak, translate, and listen in **English, Hindi, Spanish, and French**")
+st.markdown(
+    "#### Speak, translate, and listen in **English, Hindi, Spanish, and French**"
+)
 
 # ---------------- Voice Badge ----------------
 try:
@@ -55,9 +110,15 @@ except Exception:
     voice_available = False
 
 if voice_available:
-    st.markdown('<span class="voice-badge available">Voice input: Available</span>', unsafe_allow_html=True)
+    st.markdown(
+        '<span class="voice-badge available">Voice input: Available</span>',
+        unsafe_allow_html=True,
+    )
 else:
-    st.markdown('<span class="voice-badge disabled">Voice input: Disabled on cloud</span>', unsafe_allow_html=True)
+    st.markdown(
+        '<span class="voice-badge disabled">Voice input: Disabled on cloud</span>',
+        unsafe_allow_html=True,
+    )
 
 # ---------------- Language Selection ----------------
 languages = {"English": "en", "Hindi": "hi", "Spanish": "es", "French": "fr"}
@@ -102,7 +163,9 @@ if voice_available:
             recognizer.adjust_for_ambient_noise(source)
             audio = recognizer.listen(source, timeout=5)
         try:
-            spoken_text = recognizer.recognize_google(audio, language=languages[src_lang])
+            spoken_text = recognizer.recognize_google(
+                audio, language=languages[src_lang]
+            )
             st.write(f"🗣️ You said: `{spoken_text}`")
             with st.spinner("✨ Translating..."):
                 src = languages[src_lang]
