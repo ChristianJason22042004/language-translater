@@ -6,4 +6,4 @@ sentencepiece
 gTTS
 SpeechRecognition
 pyaudio
-sacremoses
+sacremoses  
