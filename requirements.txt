@@ -1,9 +1,8 @@
---extra-index-url https://download.pytorch.org/whl/cpu
 streamlit
 transformers
-torch==2.0.1+cpu
+torch==2.0.1+cpu --extra-index-url https://download.pytorch.org/whl/cpu
 sentencepiece
 gTTS
 SpeechRecognition
+sacremoses
 pyaudio
-sacremoses  
