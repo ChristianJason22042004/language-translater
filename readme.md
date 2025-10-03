@@ -78,6 +78,8 @@ packages.txt
 Lists system-level dependencies needed for some Python packages to work (e.g., portaudio19-dev, python3-dev).
 Install these using your system’s package manager (like apt) before running Python scripts.
 
+---
+
 ## Why Streamlit?
 Provides a fast and easy way to build interactive web apps in Python
 
