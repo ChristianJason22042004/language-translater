@@ -1,4 +1,3 @@
-import os
 import streamlit as st
 from transformers import MarianMTModel, MarianTokenizer
 from gtts import gTTS
