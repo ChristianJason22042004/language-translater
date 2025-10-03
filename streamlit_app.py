@@ -4,6 +4,9 @@ from gtts import gTTS
 import speech_recognition as sr
 import tempfile
 
+if "STREAMLIT_SERVER" in os.environ:
+    st.info("🎤 Voice input is disabled on cloud. Use the text box for translations. For full voice functionality, run this app locally.")
+
 # Available models
 models = {
     "en-hi": "Helsinki-NLP/opus-mt-en-hi",
