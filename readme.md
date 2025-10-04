@@ -104,7 +104,8 @@ I am learning and building this project step by step 🚀, and I would love help
 Works well for short text (1–2 lines)
 
 ❌ Fails or gives poor results on big paragraphs
-Ways you can contribute:
+
+---
 
 Ways you can contribute:
 🎨 Improve the UI/UX (animations, responsive design, themes)
@@ -118,6 +119,8 @@ Ways you can contribute:
 🔊 Add more natural voices for TTS
 
 🛡️ Fix bugs, improve performance, add error handling
+
+---
 
 How to contribute:
 Fork this repo
