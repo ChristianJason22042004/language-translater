@@ -108,6 +108,7 @@ Works well for short text (1–2 lines)
 ---
 
 Ways you can contribute:
+
 🎨 Improve the UI/UX (animations, responsive design, themes)
 
 ⚡ Cache translation models (avoid reloading every time)
