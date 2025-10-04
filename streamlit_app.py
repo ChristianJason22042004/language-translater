@@ -93,6 +93,12 @@ h1, h2, h3 {
     color: white;
 }
 
+.stCodeBlock pre {
+    background-color: #1e2a32 !important;
+    color: #7CFC00 !important;  /* Lime green text */
+    font-size: 0.95rem !important;
+}
+
 @media (max-width: 768px) {
     h1, h2, h3 { font-size: 1.3rem; }
     .stTextArea textarea { font-size: 0.95rem; padding: 8px; }
