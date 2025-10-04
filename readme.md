@@ -100,32 +100,44 @@ Install these using your system’s package manager (like apt) before running Py
 ### 🤝 Contributions Welcome
 I am learning and building this project step by step 🚀, and I would love help from the community.
 
+⚠️ Current Limitation:
+Works well for short text (1–2 lines)
+
+❌ Fails or gives poor results on big paragraphs
 Ways you can contribute:
 
+Ways you can contribute:
 🎨 Improve the UI/UX (animations, responsive design, themes)
 
 ⚡ Cache translation models (avoid reloading every time)
 
 🌍 Add more language pairs (e.g., German, Japanese, Arabic, Gujarati)
 
-🧠 Improve accuracy with better NLP models
+🧠 Fix the big paragraph issue by using better NLP models or chunking text
 
 🔊 Add more natural voices for TTS
 
 🛡️ Fix bugs, improve performance, add error handling
 
 How to contribute:
-
 Fork this repo
 
-Create a new branch (git checkout -b feature/your-feature)
+Create a new branch 
+```bash
+git checkout -b feature/your-feature
+```
 
 Make your changes ✨
 
-Commit (git commit -m "Added new feature")
+Commit your changes
+```bash
+git commit -m "Added new feature"
+```
 
-Push (git push origin feature/your-feature)
-
+Push your branch
+```bash
+(git push origin feature/your-feature)
+```
 Open a Pull Request here
 
 ---
