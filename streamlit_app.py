@@ -92,6 +92,14 @@ h1, h2, h3 {
     background-color: #dc3545;
     color: white;
 }
+
+@media (max-width: 768px) {
+    h1, h2, h3 { font-size: 1.3rem; }
+    .stTextArea textarea { font-size: 0.95rem; padding: 8px; }
+    .stButton>button { font-size: 0.9rem; padding: 8px 12px; }
+    .voice-badge { font-size: 0.8rem; padding: 4px 8px; }
+}
+
 </style>
 """,
     unsafe_allow_html=True,
