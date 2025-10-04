@@ -123,6 +123,7 @@ Ways you can contribute:
 ---
 
 How to contribute:
+
 Fork this repo
 
 Create a new branch 
