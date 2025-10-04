@@ -97,6 +97,39 @@ Install these using your system’s package manager (like apt) before running Py
 
 ---
 
+### 🤝 Contributions Welcome
+I am learning and building this project step by step 🚀, and I would love help from the community.
+
+Ways you can contribute:
+
+🎨 Improve the UI/UX (animations, responsive design, themes)
+
+⚡ Cache translation models (avoid reloading every time)
+
+🌍 Add more language pairs (e.g., German, Japanese, Arabic, Gujarati)
+
+🧠 Improve accuracy with better NLP models
+
+🔊 Add more natural voices for TTS
+
+🛡️ Fix bugs, improve performance, add error handling
+
+How to contribute:
+
+Fork this repo
+
+Create a new branch (git checkout -b feature/your-feature)
+
+Make your changes ✨
+
+Commit (git commit -m "Added new feature")
+
+Push (git push origin feature/your-feature)
+
+Open a Pull Request here
+
+---
+
 ## Why Streamlit?
 Provides a fast and easy way to build interactive web apps in Python
 
