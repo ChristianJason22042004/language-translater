@@ -93,17 +93,14 @@ h1, h2, h3 {
     color: white;
 }
 
-.stCodeBlock pre {
-    background-color: #1e2a32 !important;
-    color: #7CFC00 !important;  /* Lime green text */
-    font-size: 0.95rem !important;
-}
-
-@media (max-width: 768px) {
-    h1, h2, h3 { font-size: 1.3rem; }
-    .stTextArea textarea { font-size: 0.95rem; padding: 8px; }
-    .stButton>button { font-size: 0.9rem; padding: 8px 12px; }
-    .voice-badge { font-size: 0.8rem; padding: 4px 8px; }
+@media only screen and (max-width:600px){
+    .stTextArea textarea, .stCodeBlock pre {
+        font-size:1.2rem !important;
+    }
+    .stButton>button {
+        font-size:1rem;
+        padding:10px 18px;
+    }
 }
 
 </style>
