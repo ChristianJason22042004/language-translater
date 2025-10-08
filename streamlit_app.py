@@ -29,7 +29,7 @@ def translate(text, src, tgt):
 
 # ---------------- UI Setup ----------------
 st.set_page_config(
-    page_title="🌍 Smart Language Translator",
+    page_title="Smart Language Translator",
     page_icon="🗣️",
     layout="centered"
 )
@@ -110,7 +110,7 @@ h1, h2, h3 {
     unsafe_allow_html=True,
 )
 
-st.title("🎙️ Smart Voice Translator")
+st.title("🌍 AI-Powered Language Translator")
 st.markdown(
     "#### Speak, translate, and listen in **English, Hindi, Spanish, and French**"
 )
