@@ -29,7 +29,9 @@ def translate(text, src, tgt):
 
 # ---------------- UI Setup ----------------
 st.set_page_config(
-    page_title="🌍 Smart Voice Translator", page_icon="🎙️", layout="centered"
+    page_title="🌍 Smart Language Translator",
+    page_icon="🗣️",
+    layout="centered"
 )
 
 # Custom CSS
