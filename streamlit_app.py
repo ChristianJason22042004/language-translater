@@ -20,143 +20,279 @@ MODELS = {
     "fr-en": "Helsinki-NLP/opus-mt-fr-en",
 }
 
+LANGUAGE_FLAGS = {
+    "English": "🇬🇧",
+    "Hindi": "🇮🇳",
+    "Spanish": "🇪🇸",
+    "French": "🇫🇷",
+}
+
+LANGUAGES = {
+    "English": "en",
+    "Hindi": "hi",
+    "Spanish": "es",
+    "French": "fr",
+}
+
 
 # ================== TRANSLATION LOGIC ==================
 def translate_text(text: str, source: str, target: str) -> str:
     model_key = f"{source}-{target}"
-
     if model_key not in MODELS:
-        return "❌ This language pair is currently not supported."
-
+        return None
     tokenizer, model = load_translation_model(MODELS[model_key])
-
-    inputs = tokenizer(
-        text,
-        return_tensors="pt",
-        padding=True,
-        truncation=True
-    )
-
+    inputs = tokenizer(text, return_tensors="pt", padding=True, truncation=True)
     with torch.no_grad():
         outputs = model.generate(**inputs)
-
     return tokenizer.decode(outputs[0], skip_special_tokens=True)
 
 
-# ================== STREAMLIT CONFIG ==================
+# ================== PAGE CONFIG ==================
 st.set_page_config(
-    page_title="AI Language Translator",
-    page_icon="🌍",
+    page_title="Translucent — AI Translator",
+    page_icon="🌐",
     layout="centered"
 )
 
-
-# ================== PROFESSIONAL UI CSS ==================
+# ================== CSS ==================
 st.markdown("""
 <style>
-body, .stApp {
-    background: linear-gradient(135deg, #0f172a, #020617);
-    color: #f8fafc;
-    font-family: 'Segoe UI', system-ui, sans-serif;
+@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap');
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body, .stApp {
+    background-color: #F7F4EF !important;
+    font-family: 'DM Sans', sans-serif;
+    color: #1a1a18;
 }
 
-h1, h2, h3 {
-    text-align: center;
-    font-weight: 600;
-}
-
+/* Hide default Streamlit chrome */
+#MainMenu, footer, header { visibility: hidden; }
 .block-container {
-    max-width: 720px;
-    padding-top: 2rem;
+    max-width: 700px !important;
+    padding: 3rem 1.5rem 4rem !important;
 }
 
+/* ── Wordmark ── */
+.wordmark {
+    font-family: 'DM Serif Display', serif;
+    font-size: 2.6rem;
+    letter-spacing: -0.02em;
+    color: #1a1a18;
+    text-align: center;
+    line-height: 1;
+    margin-bottom: 0.3rem;
+}
+.tagline {
+    text-align: center;
+    font-size: 0.82rem;
+    font-weight: 300;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: #8a8070;
+    margin-bottom: 2.8rem;
+}
+
+/* ── Language Selector Card ── */
+.lang-card {
+    background: #FFFFFF;
+    border: 1px solid #E4DECE;
+    border-radius: 20px;
+    padding: 1.6rem 1.8rem;
+    margin-bottom: 1.2rem;
+    box-shadow: 0 2px 20px rgba(0,0,0,0.04);
+}
+.lang-label {
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #8a8070;
+    margin-bottom: 0.5rem;
+}
+
+/* ── Selectbox override ── */
+.stSelectbox > div > div {
+    background: #F7F4EF !important;
+    border: 1px solid #D9D0C0 !important;
+    border-radius: 12px !important;
+    color: #1a1a18 !important;
+    font-family: 'DM Sans', sans-serif !important;
+    font-size: 0.95rem !important;
+}
+
+/* ── Text areas ── */
+.stTextArea label { display: none !important; }
 .stTextArea textarea {
-    background-color: #020617 !important;
-    color: #e5e7eb !important;
-    border-radius: 14px;
-    border: 1px solid #334155;
+    background: #FFFFFF !important;
+    border: 1px solid #E4DECE !important;
+    border-radius: 16px !important;
+    color: #1a1a18 !important;
+    font-family: 'DM Sans', sans-serif !important;
+    font-size: 1rem !important;
+    line-height: 1.65 !important;
+    padding: 1.1rem 1.2rem !important;
+    resize: none !important;
+    box-shadow: 0 2px 20px rgba(0,0,0,0.04) !important;
+    transition: border-color 0.2s ease !important;
 }
+.stTextArea textarea:focus {
+    border-color: #B8A890 !important;
+    box-shadow: 0 0 0 3px rgba(184,168,144,0.15) !important;
+    outline: none !important;
+}
+.stTextArea textarea::placeholder { color: #B0A494 !important; }
 
+/* ── Translate Button ── */
 .stButton > button {
-    width: 100%;
-    background: linear-gradient(90deg, #2563eb, #1d4ed8) !important;
-    color: white !important;
-    border-radius: 14px;
-    font-weight: 600;
-    padding: 0.7rem;
+    width: 100% !important;
+    background: #1a1a18 !important;
+    color: #F7F4EF !important;
+    border: none !important;
+    border-radius: 14px !important;
+    font-family: 'DM Sans', sans-serif !important;
+    font-size: 0.9rem !important;
+    font-weight: 500 !important;
+    letter-spacing: 0.06em !important;
+    padding: 0.85rem 1rem !important;
+    cursor: pointer !important;
+    transition: background 0.2s ease, transform 0.15s ease !important;
+    margin-top: 0.4rem !important;
 }
-
 .stButton > button:hover {
-    background: linear-gradient(90deg, #1d4ed8, #1e40af) !important;
-    transform: scale(1.02);
+    background: #333330 !important;
+    transform: translateY(-1px) !important;
+}
+.stButton > button:active { transform: translateY(0) !important; }
+
+/* ── Divider arrow ── */
+.swap-arrow {
+    text-align: center;
+    font-size: 1.3rem;
+    color: #B0A494;
+    margin: -0.3rem 0 0.6rem;
+    user-select: none;
 }
 
-.info-card {
-    background-color: #020617;
-    border: 1px solid #334155;
-    border-radius: 16px;
-    padding: 1.2rem;
-    margin-bottom: 1.5rem;
+/* ── Result card ── */
+.result-card {
+    background: #1a1a18;
+    border-radius: 20px;
+    padding: 1.8rem;
+    margin-top: 1.4rem;
+    box-shadow: 0 4px 30px rgba(0,0,0,0.12);
+}
+.result-lang-badge {
+    display: inline-block;
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #8a8070;
+    background: #2a2a28;
+    border-radius: 8px;
+    padding: 0.25rem 0.65rem;
+    margin-bottom: 1rem;
+}
+.result-text {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.35rem;
+    line-height: 1.6;
+    color: #F7F4EF;
+    letter-spacing: -0.01em;
 }
 
-@media (max-width: 600px) {
-    .stTextArea textarea {
-        font-size: 1.1rem;
-    }
+/* ── Warning / info overrides ── */
+.stWarning, .stInfo {
+    border-radius: 12px !important;
+    font-family: 'DM Sans', sans-serif !important;
+    font-size: 0.88rem !important;
+}
+
+/* ── Spinner ── */
+.stSpinner { color: #1a1a18 !important; }
+
+/* ── Offline badge ── */
+.offline-badge {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    font-size: 0.75rem;
+    font-weight: 400;
+    color: #8a8070;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 2.2rem;
+}
+.offline-dot {
+    width: 6px; height: 6px;
+    background: #7DB87D;
+    border-radius: 50%;
+    display: inline-block;
+    box-shadow: 0 0 0 3px rgba(125,184,125,0.25);
 }
 </style>
 """, unsafe_allow_html=True)
 
 
 # ================== UI ==================
-st.title("🌍 AI Language Translator")
+
+st.markdown('<div class="wordmark">Translucent</div>', unsafe_allow_html=True)
+st.markdown('<div class="tagline">Offline Neural Translation</div>', unsafe_allow_html=True)
 st.markdown(
-    "<p style='text-align:center; opacity:0.85;'>Offline Neural Translation • Secure • Fast</p>",
+    '<div class="offline-badge"><span class="offline-dot"></span> Running locally · No data leaves your machine</div>',
     unsafe_allow_html=True
 )
 
-st.markdown("""
-<div class="info-card">
-This translator uses <b>offline neural models</b> powered by HuggingFace MarianMT.
-No internet calls are made after model download.
-</div>
-""", unsafe_allow_html=True)
-
-# Language mapping
-languages = {
-    "English": "en",
-    "Hindi": "hi",
-    "Spanish": "es",
-    "French": "fr"
-}
-
+# Language pickers
 col1, col2 = st.columns(2)
 with col1:
-    src_lang = st.selectbox("Source Language", list(languages.keys()))
+    src_lang = st.selectbox(
+        "From",
+        list(LANGUAGES.keys()),
+        format_func=lambda x: f"{LANGUAGE_FLAGS[x]}  {x}"
+    )
 with col2:
-    tgt_lang = st.selectbox("Target Language", list(languages.keys()))
+    tgt_lang = st.selectbox(
+        "To",
+        [l for l in LANGUAGES.keys() if l != src_lang],
+        format_func=lambda x: f"{LANGUAGE_FLAGS[x]}  {x}"
+    )
 
+# Input
 input_text = st.text_area(
-    "Text to Translate",
-    placeholder="Type or paste your text here..."
+    "Input",
+    placeholder=f"Type something in {src_lang}…",
+    height=160,
+    label_visibility="collapsed"
 )
 
-if st.button("Translate"):
+translate_clicked = st.button("Translate  →")
+
+# ── Result ──
+if translate_clicked:
     if not input_text.strip():
-        st.warning("⚠️ Please enter text to translate.")
-    elif src_lang == tgt_lang:
-        st.info("ℹ️ Source and target languages are the same.")
+        st.warning("Please enter some text first.")
     else:
-        with st.spinner("Translating text..."):
-            translation = translate_text(
+        with st.spinner("Loading model & translating…"):
+            result = translate_text(
                 input_text,
-                languages[src_lang],
-                languages[tgt_lang]
+                LANGUAGES[src_lang],
+                LANGUAGES[tgt_lang]
             )
 
-        st.success("✅ Translation completed successfully")
-        st.text_area(
-            "Translated Output",
-            translation,
-            height=190
-        )
+        if result is None:
+            st.warning(
+                f"The **{src_lang} → {tgt_lang}** pair isn't supported yet. "
+                "Try a different combination."
+            )
+        else:
+            flag = LANGUAGE_FLAGS[tgt_lang]
+            st.markdown(f"""
+            <div class="result-card">
+                <div class="result-lang-badge">{flag} {tgt_lang}</div>
+                <div class="result-text">{result}</div>
+            </div>
+            """, unsafe_allow_html=True)
