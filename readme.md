@@ -1,157 +1,197 @@
-## 🌍 Smart Language Translator
-A modern multilingual **AI-powered voice translator** built with **Streamlit**, **Hugging Face Transformers**, **Speech Recognition**, and **Google TTS**.  
+<div align="center">
 
-It allows you to:
-- 🎤 Speak in one language and hear the translation in another.  
-- ✍️ Type text and get instant translations.  
-- 🔊 Listen to the translated speech output.
+# 🗣️ Vernā
 
-Live Demo: https://nlp-language-translater.streamlit.app/
-  
----
+**Offline Neural Machine Translation**
 
-## 🚀 Why This Project?
-In a world of increasing global communication, **language should not be a barrier**.  
-This project demonstrates how **AI + NLP (Natural Language Processing)** can be used to build a **real-time voice translation assistant** that is:  
-- ✅ Easy to use  
-- ✅ Lightweight  
-- ✅ Covers multiple languages (English, Hindi, Spanish, French)  
+*Runs entirely on your machine · No API keys · No data transmitted*
+
+[![Python](https://img.shields.io/badge/Python-3.9%2B-3776AB?style=flat-square&logo=python&logoColor=white)](https://python.org)
+[![Streamlit](https://img.shields.io/badge/Streamlit-1.28%2B-FF4B4B?style=flat-square&logo=streamlit&logoColor=white)](https://streamlit.io)
+[![HuggingFace](https://img.shields.io/badge/MarianMT-Helsinki--NLP-FFD21E?style=flat-square&logo=huggingface&logoColor=black)](https://huggingface.co/Helsinki-NLP)
+[![License](https://img.shields.io/badge/License-MIT-green?style=flat-square)](LICENSE)
+
+</div>
 
 ---
 
-## 🧠 AI / NLP Behind the Scenes
-- **Helsinki-NLP MarianMT Models** (via Hugging Face)  
-  - Pretrained translation models for dozens of language pairs.  
-  - Example: `Helsinki-NLP/opus-mt-en-hi` for **English → Hindi**.  
-- **Speech Recognition AI**  
-  - Converts spoken words into text using Google’s Speech-to-Text API.  
-- **Text-to-Speech AI (gTTS)**  
-  - Converts translated text into natural-sounding speech.  
+## Overview
 
-Pipeline:  
-`🎤 Voice Input → 📝 Text → 🌐 NLP Translation → 🔊 Speech Output`  
+**Vernā** (from *vernacular* — one's native tongue) is a clean, privacy-first neural machine translation app built with Streamlit and HuggingFace MarianMT models. After the one-time model download, it runs with zero internet connection and zero data leaving your device.
 
 ---
 
-## ⚡ Features
-- 🌍 Translate between **English, Hindi, Spanish, French**.  
-- 🎙️ Speak directly using microphone.  
-- ✍️ Type text and translate instantly.  
-- 🔊 Get spoken audio output for translations.  
-- 🎨 Modern UI with custom CSS & animations.  
+## Features
+
+- 🔒 **100% offline** after first model download
+- ⚡ **Model caching** — loads once per session, instant on repeat use
+- 🎯 **Beam search decoding** (`num_beams=4`) for higher translation quality
+- ⚠️ **Pre-flight pair validation** — unsupported pairs shown before you translate
+- 📏 **600-character input limit** with live counter
+- 🌐 **Native script display** — results labelled in the target language's own script
 
 ---
 
-## 🛠️ Tech Stack
-- **Python** 🐍  
-- **Streamlit** → Web UI  
-- **Hugging Face Transformers** → MarianMT models for translation  
-- **SpeechRecognition** → Speech-to-text  
-- **gTTS** → Text-to-speech  
+## Supported Language Pairs
+
+| From | To |
+|---|---|
+| 🇬🇧 English | 🇮🇳 Hindi |
+| 🇮🇳 Hindi | 🇬🇧 English |
+| 🇬🇧 English | 🇪🇸 Spanish |
+| 🇪🇸 Spanish | 🇬🇧 English |
+| 🇬🇧 English | 🇫🇷 French |
+| 🇫🇷 French | 🇬🇧 English |
+
+> Models are auto-downloaded from HuggingFace Hub on first use (~300 MB each) and cached locally.
 
 ---
 
-## 📦 Installation
+## Quick Start
 
-1. Clone the repo:
 ```bash
-git clone https://github.com/your-username/smart-voice-translator.git
-cd smart-voice-translator
-```
+# 1. Clone
+git clone https://github.com/your-username/verna.git
+cd verna
 
-2. Install dependencies:
-```bash
+# 2. Install
 pip install -r requirements.txt
+
+# 3. Run
+streamlit run verna.py
 ```
 
-3. Run the app:
+Open **http://localhost:8501** in your browser.
+
+---
+
+## Requirements
+
+```txt
+streamlit>=1.28.0
+transformers>=4.35.0
+torch>=2.0.0
+sentencepiece
+sacremoses
+```
+
+Install all at once:
+
 ```bash
-streamlit run streamlit_app.py
+pip install streamlit transformers torch sentencepiece sacremoses
 ```
 
-4. Open your browser
-By default, Streamlit will open the app at:
-```bash
-http://localhost:8501
+### Why `sentencepiece` and `sacremoses`?
+
+These are not called directly in code — `MarianTokenizer` depends on them internally:
+
+| Package | Role |
+|---|---|
+| `sentencepiece` | Subword tokenization — splits rare words into known fragments so the model handles any vocabulary |
+| `sacremoses` | Moses-style text normalization — matches the preprocessing format the models were trained on |
+
+---
+
+## How It Works
+
+```
+Input text
+    │
+    ▼
+MarianTokenizer          ← text → token ID tensors
+    │  truncate to 512 tokens, pad, return PyTorch tensors
+    ▼
+MarianMTModel.generate()
+    │  Beam Search (num_beams=4) — explores 4 candidate
+    │  translations simultaneously, keeps highest-scored
+    ▼
+tokenizer.decode()       ← token IDs → human-readable string
+    │  skip_special_tokens=True strips [PAD], </s>
+    ▼
+Result displayed in UI
+```
+
+**Why beam search over greedy?** Greedy decoding picks the single highest-probability token at every step. Beam search keeps `n` candidates alive in parallel — it can recover from early low-probability choices that lead to a better overall sequence. `num_beams=4` is a good quality/speed tradeoff.
+
+**Why `torch.no_grad()`?** Gradients are only needed during *training* to update model weights. During inference (prediction), computing them wastes memory and time. Wrapping generation in `torch.no_grad()` disables this entirely.
+
+---
+
+## Project Structure
+
+```
+verna/
+├── verna.py          # Entire app — model, translation logic, UI
+├── requirements.txt
+└── README.md
+```
+
+Vernā is intentionally a single file. Sections are separated by double-rule comments for easy navigation:
+
+```
+MODEL CACHE       @st.cache_resource wrapper
+CONFIG            MODELS dict + LANGUAGES registry
+TRANSLATION       tokenize → generate → decode pipeline
+PAGE CONFIG       Streamlit metadata
+CSS               ~20 lines — result card only, rest is native Streamlit
+HEADER            Wordmark + tagline + privacy status
+LANGUAGE SELECT   Two-column dropdowns with auto-filter
+INPUT             Textarea + live char counter + pair validation
+RESULT            Dark result card with native script label
+FOOTER            Supported pair reference
 ```
 
 ---
 
-## 💡 Voice Input: Local vs Cloud
-Local machine: 🎤 Voice input works! Click Speak & Translate to use your microphone.
+## Adding a New Language Pair
 
-Streamlit Cloud: 🎤 Voice input is disabled, because remote servers cannot access your local microphone.
+Two edits, nothing else changes:
 
-You can always type text and get translations with TTS audio output.
+**1. Add the model to `MODELS`:**
 
----
-
-## 📝 Troubleshooting Files: requirements.txt & packages.txt
-requirements.txt
-Lists all Python packages required by the project (e.g., transformers, speechrecognition, gTTS, streamlit).
-Use it with pip install -r requirements.txt to quickly install Python dependencies.
-
-packages.txt
-Lists system-level dependencies needed for some Python packages to work (e.g., portaudio19-dev, python3-dev).
-Install these using your system’s package manager (like apt) before running Python scripts.
-
----
-
-### 🤝 Contributions Welcome
-I am learning and building this project step by step 🚀, and I would love help from the community.
-
-⚠️ Current Limitation:
-Works well for short text (1–2 lines)
-
-❌ Fails or gives poor results on big paragraphs
-
----
-
-Ways you can contribute:
-
-🎨 Improve the UI/UX (animations, responsive design, themes)
-
-⚡ Cache translation models (avoid reloading every time)
-
-🌍 Add more language pairs (e.g., German, Japanese, Arabic, Gujarati)
-
-🧠 Fix the big paragraph issue by using better NLP models or chunking text
-
-🔊 Add more natural voices for TTS
-
-🛡️ Fix bugs, improve performance, add error handling
-
----
-
-How to contribute:
-
-Fork this repo
-
-Create a new branch 
-```bash
-git checkout -b feature/your-feature
+```python
+MODELS = {
+    ...
+    "en-de": "Helsinki-NLP/opus-mt-en-de",
+    "de-en": "Helsinki-NLP/opus-mt-de-en",
+}
 ```
 
-Make your changes ✨
+**2. Register the language in `LANGUAGES`:**
 
-Commit your changes
-```bash
-git commit -m "Added new feature"
+```python
+LANGUAGES = {
+    ...
+    "German": {"code": "de", "flag": "🇩🇪", "native": "Deutsch"},
+}
 ```
 
-Push your branch
-```bash
-(git push origin feature/your-feature)
-```
-Open a Pull Request here
+The dropdowns, pair validation, result card, and footer all update automatically. Browse 1,000+ available Helsinki-NLP models at [huggingface.co/Helsinki-NLP](https://huggingface.co/Helsinki-NLP).
 
 ---
 
-## Why Streamlit?
-Provides a fast and easy way to build interactive web apps in Python
+## Privacy
 
-Allows real-time updates for voice input/output
+Vernā makes **zero network calls during translation**. After the initial model download from HuggingFace Hub, the app is fully air-gapped. There is no logging, no analytics, and no telemetry of any kind. Your text never leaves your machine.
 
-Minimal setup compared to full-stack frameworks, perfect for AI demos
+---
 
-Works perfectly with cloud deployments for sharing, even if voice input is limited
+## Contributing
+
+1. Fork the repo
+2. Create your branch — `git checkout -b feat/your-feature`
+3. Commit — `git commit -m "feat: your change"`
+4. Push — `git push origin feat/your-feature`
+5. Open a Pull Request
+
+---
+
+## License
+
+MIT — see [LICENSE](LICENSE) for details.
+
+---
+
+<div align="center">
+<sub>Built with MarianMT · HuggingFace Transformers · Streamlit</sub>
+</div>
