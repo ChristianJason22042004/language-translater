@@ -168,30 +168,6 @@ LANGUAGES = {
 
 The dropdowns, pair validation, result card, and footer all update automatically. Browse 1,000+ available Helsinki-NLP models at [huggingface.co/Helsinki-NLP](https://huggingface.co/Helsinki-NLP).
 
----
-
-## Privacy
-
-Vernā makes **zero network calls during translation**. After the initial model download from HuggingFace Hub, the app is fully air-gapped. There is no logging, no analytics, and no telemetry of any kind. Your text never leaves your machine.
-
----
-
-## Contributing
-
-1. Fork the repo
-2. Create your branch — `git checkout -b feat/your-feature`
-3. Commit — `git commit -m "feat: your change"`
-4. Push — `git push origin feat/your-feature`
-5. Open a Pull Request
-
----
-
-## License
-
-MIT — see [LICENSE](LICENSE) for details.
-
----
-
 <div align="center">
 <sub>Built with MarianMT · HuggingFace Transformers · Streamlit</sub>
 </div>
